@@ -61,7 +61,7 @@ class Client():
         s.settimeout(0.0)
         # capture characters without press enter?
         # os.system("stty raw -echo")
-        while True:
+        while s:
             # if data is recieved it will stop and print, else it will send every key press to the server.
             try:
                 data = s.recv(1024)
@@ -70,11 +70,11 @@ class Client():
                 print(message)
             except:
                 c = getch.getch()
-                if c > 0:
-                    try:
-                        s.send(struct.pack('b', c))
-                    except socket.error as e:
-                        print(str(e))
+                try:
+                    s.send(struct.pack('b', c))
+                except socket.error as e:
+                    print(str(e))
+
         s.close()
 
 
