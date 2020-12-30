@@ -1,4 +1,5 @@
 import socket
+# import sys
 import threading
 from socket import *
 import getch
@@ -54,12 +55,17 @@ class Client():
                 data = s.recv(1024)
                 message = str(data, 'utf-8')
                 print(message)
+                running = False
             except:
                 try:
                     c = getch.getch()
+                    # c = sys.stdin.read(1)
                     try:
                         s.send(bytes(c, encoding='utf8'))
                     except:
+                        data = s.recv(1024)
+                        message = str(data, 'utf-8')
+                        print(message)
                         running = False
                 except:
                     continue
