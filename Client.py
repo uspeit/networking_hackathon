@@ -69,7 +69,7 @@ class Client():
             except:
                 c = getch.getch()
                 try:
-                    s.send(struct.pack('b', c))
+                    s.send(bytes(c, encoding='utf8'))
                 except:
                     running = False
 
