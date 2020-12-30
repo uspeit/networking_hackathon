@@ -79,7 +79,7 @@ class Server:
         winner_team_index = 0
         team_names = ["Group 1", "Group 2"]
         if team_scores[0] < team_scores[1]:
-            winner_team_index = 2
+            winner_team_index = 1
         # Game Over Message
         message = "Game over!\n" \
                   f"Group 1 typed in {team_scores[0]} characters. Group 2 typed in {team_scores[1]} characters.\n" \
