@@ -1,6 +1,6 @@
-from Client import startClient
-from Server import startServer
+from Client import start_client
+from Server import start_server
 
 if __name__ == '__main__':
-    startServer()
-    startClient()
+    start_server()
+    start_client()
