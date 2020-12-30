@@ -48,7 +48,7 @@ class Client():
         s = socket(AF_INET, SOCK_STREAM)
         # connect to tcp server
         print(port_tcp)
-        s.connect(('192.168.0.198', port_tcp))
+        s.connect(('172.1.0.79', port_tcp))
         # Sending team name
         s.send(bytes(self.teamName, encoding='utf8'))
 
