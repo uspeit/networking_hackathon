@@ -54,6 +54,7 @@ class Client():
 
         # Receive data from Server
         data = str(s.recv(1024), 'utf-8')
+        print(data)
 
         # Setting blocking to false, Data to none and removing key presses representation
         data = None
@@ -70,7 +71,10 @@ class Client():
             except:
                 c = getch.getch()
                 if c > 0:
-                    s.send(struct.pack('b', c))
+                    try:
+                        s.send(struct.pack('b', c))
+                    except socket.error as e:
+                        print(str(e))
         s.close()
 
 
