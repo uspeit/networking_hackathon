@@ -71,13 +71,16 @@ class Server:
             print(f"{team_name} sent: {str(data, 'utf-8')}")
             self.scores[player_index] += 1
 
+        print("Game Over!\n")
+        print(self.scores)
+
         team_scores = [
             self.scores[0] + self.scores[1],
             self.scores[2] + self.scores[3]
         ]
 
         winner_team_name = "Group 1"
-        if self.scores[0] < self.scores[1]:
+        if team_scores[0] < team_scores[1]:
             winner_team_name = "Group 2"
         # Game Over Message
         message = "Game over!\n" \
@@ -85,6 +88,7 @@ class Server:
                   f"{winner_team_name} wins!==" \
                   "Congratulations to the winners:\n==\n"
         s.send(bytes(message, encoding='utf8'))
+
         self.game_started = False
         s.close()
 
