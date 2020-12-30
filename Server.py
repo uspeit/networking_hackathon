@@ -13,9 +13,9 @@ class Server:
     def __init__(self):
         self.udp_socket = socket(AF_INET, SOCK_DGRAM)
         self.tcp_socket = socket(AF_INET, SOCK_STREAM)
-        self.teams = []
+        self.players = ["Test1", "Test2", "Test3"]
         self.start_game = False
-        self.score = [0, 0]
+        self.scores = [0, 0, 0, 0]
 
     def start_server(self):
         self.udp_socket.bind((SERVER_IP, SERVER_PORT))
@@ -33,8 +33,8 @@ class Server:
             c, addr = self.tcp_socket.accept()
             lock = threading.Lock()
             lock.acquire()
-            if len(self.teams) == 1:
-                random.shuffle(self.teams)
+            if len(self.players) > 1:
+                random.shuffle(self.players)
             lock.release()
 
             # Start handler on new thread
@@ -42,26 +42,25 @@ class Server:
 
     def client_handler(self, s):
         team_name = str(s.recv(1024), 'utf-8')
-        self.teams += [team_name]
+        self.players += [team_name]
 
-        if len(self.teams) > 1:
+        if len(self.players) > 1:
             self.start_game = True
 
         while not self.start_game:
             time.sleep(0.5)
 
-        # Save team names
-        team1 = ''.join(self.teams[:int(len(self.teams) / 2)])
-        team2 = ''.join(self.teams[int(len(self.teams) / 2):])
-
         # Send start message
         s.send(bytes(
-            f"Welcome to the online typing game.\n"
-            f"Team '{team1}' playing against Team '{team2}'\n"
-            f"Type your fastest for the next 10 seconds.",
+            "Welcome to Keyboard Spamming Battle Royale.\n"
+            "Group 1:\n==\n"
+            f"{self.players[0]}\n{self.players[1]}\n"
+            "Group 2:\n==\n"
+            f"{self.players[2]}\n{self.players[3]}\n"
+            "Start pressing keys on your keyboard as fast as you can!!\n",
             encoding='utf8'))
 
-        index = self.teams.index(team_name) // 2
+        player_index = self.players.index(team_name)
 
         # Listen for packets for 10 seconds
         start_time = time.time()
@@ -70,20 +69,21 @@ class Server:
             if not data:
                 continue
             print(f"{team_name} sent: {str(data, 'utf-8')}")
-            self.score[index] += 1
+            self.scores[player_index] += 1
 
-        winner_index = 0
-        if self.score[0] < self.score[1]:
-            winner_index = 1
-        winner_team_name = team1
-        if self.score[0] < self.score[1]:
-            winner_team_name = team2
+        team_scores = [
+            self.scores[0] + self.scores[1],
+            self.scores[2] + self.scores[3]
+        ]
+
+        winner_team_name = "Group 1"
+        if self.scores[0] < self.scores[1]:
+            winner_team_name = "Group 2"
         # Game Over Message
-        message = f"===\nGame over!\n===\n" \
-                  f"Team '{self.teams[0]}' typed {self.score[0]} characters.\n" \
-                  f"Team '{self.teams[1]}' typed {self.score[1]} characters.\n" \
-                  f"Group {winner_index + 1} wins! \n\n" \
-                  f"Congratulations to {winner_team_name} for winning the game."
+        message = "Game over!\n" \
+                  f"Group 1 typed in {team_scores[0]} characters. Group 2 typed in {team_scores[1]} characters.\n" \
+                  f"{winner_team_name} wins!==" \
+                  "Congratulations to the winners:\n==\n"
         s.send(bytes(message, encoding='utf8'))
         self.start_game = False
         s.close()
