@@ -4,7 +4,6 @@ import sys
 import os
 import time
 import random
-import keyboard
 from socket import *
 import curses 
 import struct
