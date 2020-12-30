@@ -14,8 +14,8 @@ class Server:
         self.udp_socket = socket(AF_INET, SOCK_DGRAM)
         self.tcp_socket = socket(AF_INET, SOCK_STREAM)
         self.players = ["Test1", "Test2", "Test3"]
-        self.start_game = False
         self.scores = [0, 0, 0, 0]
+        self.game_started = False
 
     def start_server(self):
         self.udp_socket.bind((SERVER_IP, SERVER_PORT))
@@ -45,9 +45,9 @@ class Server:
         self.players += [team_name]
 
         if len(self.players) > 1:
-            self.start_game = True
+            self.game_started = True
 
-        while not self.start_game:
+        while not self.game_started:
             time.sleep(0.5)
 
         # Send start message
@@ -85,12 +85,12 @@ class Server:
                   f"{winner_team_name} wins!==" \
                   "Congratulations to the winners:\n==\n"
         s.send(bytes(message, encoding='utf8'))
-        self.start_game = False
+        self.game_started = False
         s.close()
 
     def broadcast_details(self):
         while True:
-            if not self.start_game:
+            if not self.game_started:
                 start_time = time.time()
                 server = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)
                 server.settimeout(0.2)
