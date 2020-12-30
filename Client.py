@@ -67,11 +67,14 @@ class Client():
                 message = str(data, 'utf-8')
                 print(message)
             except:
-                c = getch.getch()
                 try:
-                    s.send(bytes(c, encoding='utf8'))
+                    c = getch.getch()
+                    try:
+                        s.send(bytes(c, encoding='utf8'))
+                    except:
+                        running = False
                 except:
-                    running = False
+                    continue
 
         s.close()
 
