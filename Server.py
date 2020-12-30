@@ -71,22 +71,21 @@ class Server:
             print(f"{team_name} sent: {str(data, 'utf-8')}")
             self.scores[player_index] += 1
 
-        print("Game Over!\n")
-        print(self.scores)
-
         team_scores = [
             self.scores[0] + self.scores[1],
             self.scores[2] + self.scores[3]
         ]
 
-        winner_team_name = "Group 1"
+        winner_team_index = 0
+        team_names = ["Group 1", "Group 2"]
         if team_scores[0] < team_scores[1]:
-            winner_team_name = "Group 2"
+            winner_team_index = 2
         # Game Over Message
         message = "Game over!\n" \
                   f"Group 1 typed in {team_scores[0]} characters. Group 2 typed in {team_scores[1]} characters.\n" \
-                  f"{winner_team_name} wins!==" \
-                  "Congratulations to the winners:\n==\n"
+                  f"{team_names[winner_team_index]} wins!\n==\n" \
+                  f"Congratulations to the winners:\n==\n" \
+                  f"{self.players[0 + winner_team_index * 2]}\n{self.players[1 + winner_team_index * 2]}\n"
         s.send(bytes(message, encoding='utf8'))
 
         self.game_started = False
@@ -99,7 +98,7 @@ class Server:
                 server = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)
                 server.settimeout(0.2)
                 server.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
-                # server.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
+                server.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
                 magic_cookie = "feedbeef"
                 message_type = "02"
                 x = bytes.fromhex(magic_cookie)

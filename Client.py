@@ -1,5 +1,4 @@
 import socket
-# import sys
 import threading
 from socket import *
 import getch
@@ -59,7 +58,6 @@ class Client():
             except:
                 try:
                     c = getch.getch()
-                    # c = sys.stdin.read(1)
                     try:
                         s.send(bytes(c, encoding='utf8'))
                     except:
