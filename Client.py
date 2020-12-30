@@ -59,21 +59,19 @@ class Client():
         # Setting blocking to false, Data to none and removing key presses representation
         data = None
         s.settimeout(0.0)
-        # capture characters without press enter?
-        # os.system("stty raw -echo")
-        while s:
+        running = True
+        while running:
             # if data is recieved it will stop and print, else it will send every key press to the server.
             try:
                 data = s.recv(1024)
                 message = str(data, 'utf-8')
-                # self.receievedData = True
                 print(message)
             except:
                 c = getch.getch()
                 try:
                     s.send(struct.pack('b', c))
-                except socket.error as e:
-                    print(str(e))
+                except:
+                    running = False
 
         s.close()
 
