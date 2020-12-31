@@ -43,12 +43,15 @@ class Server:
     def client_handler(self, s):
         team_name = str(s.recv(1024), 'utf-8')
         self.players += [team_name]
+        print(f"{self.players} has joined the game.")
 
         if len(self.players) > 1:
             self.game_started = True
 
         while not self.game_started:
             time.sleep(0.5)
+
+        print("Game Started!")
 
         # Send start message
         s.send(bytes(
