@@ -13,7 +13,7 @@ class Server:
     def __init__(self):
         self.udp_socket = socket(AF_INET, SOCK_DGRAM)
         self.tcp_socket = socket(AF_INET, SOCK_STREAM)
-        self.players = ["Test1", "Test2", "Test3"]
+        self.players = []
         self.scores = [0, 0, 0, 0]
         self.game_started = False
 

@@ -1,4 +1,5 @@
 import socket
+import sys
 import threading
 from socket import *
 import getch
@@ -72,7 +73,7 @@ class Client():
 
 
 def start_client():
-    client = Client("dor_eitan")
+    client = Client(sys.argv[1])
     client.start()
 
 
