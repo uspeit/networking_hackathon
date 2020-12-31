@@ -12,6 +12,7 @@ class Client():
     def __init__(self, team_name):
         self.team_name = team_name
         self.udp_socket = socket(AF_INET, SOCK_DGRAM)
+        self.udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     def start(self):
         # Creates a thread to start listening for broadcasts.
