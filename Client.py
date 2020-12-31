@@ -29,6 +29,7 @@ class Client():
         # Receive Packet
         message = self.udp_socket.recvfrom(1024)
 
+        self.udp_socket.close()
         # Teardown Packet
         # magic_cookie = message[:4]
         # message_type = message[4]
