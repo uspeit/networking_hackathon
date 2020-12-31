@@ -43,9 +43,9 @@ class Server:
     def client_handler(self, s):
         team_name = str(s.recv(1024), 'utf-8')
         self.players += [team_name]
-        print(f"{self.players} has joined the game.")
+        print(f"{team_name} has joined the game.")
 
-        if len(self.players) > 1:
+        if len(self.players) > 3:
             self.game_started = True
 
         while not self.game_started:
