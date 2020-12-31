@@ -98,6 +98,7 @@ class Server:
                 server = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)
                 server.settimeout(0.2)
                 server.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
+                server.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
                 server.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
                 magic_cookie = "feedbeef"
                 message_type = "02"
